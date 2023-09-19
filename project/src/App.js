@@ -1,50 +1,69 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { createElement } from "react";
+import { useState } from "react";
+import styles from "./App.module.css";
+
+const numbers = [
+	{ id: 0, number: 0 },
+	{ id: 1, number: 1 },
+	{ id: 2, number: 2 },
+	{ id: 3, number: 3 },
+	{ id: 4, number: 4 },
+	{ id: 5, number: 5 },
+	{ id: 6, number: 6 },
+	{ id: 7, number: 7 },
+	{ id: 8, number: 8 },
+	{ id: 9, number: 9 },
+];
 
 function App() {
-	// Императивный стиль
-	const currentYear = new Date().getFullYear();
-	// Декларативный
-	return createElement(
-		"div",
-		{
-			className: "App",
-		},
-		/*#__PURE__*/ createElement(
-			"header",
-			{
-				className: "App-header",
-			},
-			/*#__PURE__*/ createElement("img", {
-				src: logo,
-				className: "App-logo",
-				alt: "logo",
-			}),
-			/*#__PURE__*/ createElement(
-				"p",
-				null,
-				"Edit ",
-				/*#__PURE__*/ createElement("code", null, "src/App.js"),
-				" and save to reload."
-			),
-			/*#__PURE__*/ createElement(
-				"a",
-				{
-					className: "App-link",
-					href: "https://reactjs.org",
-					target: "_blank",
-					rel: "noopener noreferrer",
-				},
-				"Learn React"
-			),
-			/*#__PURE__*/ createElement(
-				"p",
-				null,
-				"\u0422\u0435\u043A\u0443\u0449\u0438\u0439 \u0433\u043E\u0434: ",
-				currentYear
-			)
-		)
+	const [switchColor, setSwitchColor] = useState(false);
+
+	const [value, setValue] = useState("");
+	const onClickResult = () => {
+		setSwitchColor(!switchColor);
+		setValue(eval(value));
+	};
+	const onClickPlus = () => {
+		setSwitchColor();
+		setValue(value + " + ");
+	};
+	const onClickMinus = () => {
+		setSwitchColor();
+		setValue(value + " - ");
+	};
+	return (
+		<div className={styles.container}>
+			<button onClick={() => setValue("")} className={styles.reset}>
+				С
+			</button>
+			<input
+				className={switchColor ? styles.result : styles.input}
+				type="text"
+				value={value}
+			></input>
+			<div className={styles.block}>
+				{numbers.map(({ id, number }) => (
+					<button
+						onClick={() => setValue(`${value}${number}`)}
+						key={id}
+						className={styles.numbers}
+					>
+						{number}
+					</button>
+				))}
+				<div>
+					<button onClick={onClickPlus} className={styles.operator}>
+						+
+					</button>
+					<button onClick={onClickMinus} className={styles.operator}>
+						-
+					</button>
+					<button onClick={onClickResult} className={styles.operator}>
+						=
+					</button>
+				</div>
+			</div>
+		</div>
 	);
 }
+
 export default App;
